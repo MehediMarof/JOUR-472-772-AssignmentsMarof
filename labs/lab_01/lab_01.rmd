@@ -55,11 +55,10 @@ umd_courses|>
 
 ```{r}
 umd_courses |>
-  group_by(id) |>
-   summarise(
-    count_classes = max(n(id))
+  group_by(title) |>
+  summarise(times_offered = n()
   ) |>
-  arrange(desc(count_classes))
+  arrange(desc(times_offered))
 ```
 
 **Q3** Count the number of courses for each instructor and department. Which instructor has taught the most? **A3**
