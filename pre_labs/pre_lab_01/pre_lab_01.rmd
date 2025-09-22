@@ -240,7 +240,7 @@ No code here; I want you to provide three questions that this data suggests to y
 
 **Answer**
 
-1.  Which department consistently offers the most number of seats?
+1.  How many courses does each professor teach?
 
 2.  How do average class sizes differ across terms?
 
