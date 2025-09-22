@@ -51,11 +51,11 @@ umd_courses|>
   arrange(desc(mean_seats))
 ```
 
-**Q2** Find out the greatest number of times any individual class has been offered in our dataset. Your code must show the greatest number of classes first. **A2 Doctoral Dissertation Research has been offered most number of times, 1686.**
+**Q2** Find out the greatest number of times any individual class has been offered in our dataset. Your code must show the greatest number of classes first. **A2 there are 140 courses that were offered 29 times.**
 
 ```{r}
 umd_courses |>
-  group_by(title) |>
+  group_by(id) |>
   summarise(times_offered = n()
   ) |>
   arrange(desc(times_offered))
@@ -67,7 +67,8 @@ umd_courses |>
 umd_courses |> 
   group_by(instructors, department) |> 
   summarise(num_courses = n()) |> 
-  arrange(desc(num_courses))
+  arrange(desc(num_courses)) |> 
+  drop_na()
 ```
 
 **Q4** Given the results for Q3, what would have made it easier to find the answer? You don't have to know *how* to accomplish this; I want you to describe in words what would make the answer easier to see. How confident are you that the answer you got is the right one, and why? **A4**

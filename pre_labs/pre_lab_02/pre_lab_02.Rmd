@@ -120,7 +120,7 @@ So AND gives us the same answer we got before. What does using the OR operator g
 **Task** Run the following code and put the number of results below.
 
 ```{r}
-and_theatre_seats_15 <- umd_courses |> filter(department == "Theatre" | seats >= 15)
+and_theatre_seats_15 <- umd_courses |> filter(department == "Theatre" | seats >= 150)
 
 nrow(and_theatre_seats_15)
 ```
