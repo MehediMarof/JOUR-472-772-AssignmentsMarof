@@ -78,7 +78,8 @@ umd_courses |>
 
 1.  **How many courses does each professor teach?**
 
-```{r}umd_courses |>}
+```{r}
+umd_courses |> 
   group_by(instructors) |> 
   summarise(num_courses = n()) |> 
   arrange(desc(num_courses))
