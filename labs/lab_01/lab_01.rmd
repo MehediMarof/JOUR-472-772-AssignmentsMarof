@@ -61,7 +61,7 @@ umd_courses |>
   arrange(desc(times_offered))
 ```
 
-**Q3** Count the number of courses for each instructor and department. Which instructor has taught the most? **A3**
+**Q3** Count the number of courses for each instructor and department. Which instructor has taught the most? **A3** I**n our dataset, the Hearing and Speech Sciences department has the highest number of courses offered by an unnamed instructor. Among named instructors, Keith Yearwood from the Geographical Sciences department has taught the most courses, with a total of 79.**
 
 ```{r}
 umd_courses |> 
