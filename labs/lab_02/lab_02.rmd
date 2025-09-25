@@ -1,0 +1,93 @@
+---
+title: "lab_02"
+author: "Derek Willis"
+date: "2025-01-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries and establish settings
+
+```{r}
+# Turn off scientific notation
+options(scipen=999)
+
+# Load the tidyverse. If you have not installed the tidyverse already, remove the # from the next line and run it first.  
+# install.packages('tidyverse')
+library(tidyverse)
+library(lubridate)
+```
+
+## Load Data
+
+Let's keep working with the UMD courses and Maryland campaign expense data we used in the pre_lab.
+
+```{r}
+umd_courses <- read_rds("data/umd_courses.rds")
+maryland_expenses <- read_csv("data/maryland_expenses.csv")
+```
+
+## Answer questions
+
+**Q1.** How many departments have offered the courses with "Climate" in the title and at least one seat? Which department has offered the most?
+
+**A1. 32 departments have offered courses with "Climate" in title. Atmospheric and Oceanic Science department offered most number of those courses, 93.**
+
+```{r}
+Climate_most_1 <- umd_courses |> filter(str_detect(title, "Climate") & seats >= 1)
+Climate_most_1 |> 
+  group_by(department) |>
+  summarise(
+    Climate_course_count = n()
+  ) |>
+  arrange(desc(Climate_course_count))
+```
+
+```{r}
+```
+
+**Q2.** Of the departments listed in A1, which one is the most interesting to you, and why?
+
+**A2. The engineering department having courses with climate in title.**
+
+**Q3** Which departments offered the most courses in the Fall 2024 term? And which departments in that term have at least one syllabus posted? Answer both of those questions and then compare the top five departments - how are they different?
+
+**A3. In Fall 2024, the Business and Management department offered the most courses (174), followed by the School of Music (158), Information Studies (137), English (125), and Teaching and Learning, Policy and Leadership (117). A total of 196 departments had at least one syllabus posted, with the largest numbers coming from Business and Management (106), Economics (54), School of Music (52), Information Studies (49), and Engineering, Professional Masters (47). Business and Management, School of Music, and Information Studies stand out as strong in both course offerings and syllabus posting, while English and Teaching and Learning, Policy and Leadership rank high in courses but not syllabus, and Economics and Engineering, Professional Masters excel in syllabus despite offering fewer courses.**
+
+```{r}
+courses_Fall2024 <- umd_courses |> filter(term == 202408)
+courses_Fall2024 |> 
+  group_by(department) |>
+  summarise(
+    course_count = n()
+  ) |>
+  arrange(desc(course_count))
+```
+
+```{r}
+courses_Fall2024 |> filter(syllabus_count >= 1) |>
+  group_by(department) |>
+  summarise(
+    dept_syllabi= n()
+  ) |>
+  arrange(desc(dept_syllabi))
+  
+```
+
+**Q4.** Using the Maryland campaign expenses data, change the datatype of the expenditure_date column so that it is a date and not a chr, saving the result as a new dataframe. Then create a new column for the month based on expenditure_date. Then write code that shows total amount spent each month by Wes Moore's committee (you'll need to search the data to find the exact name, and we're not looking in payee_name). Write a sentence describing the pattern of spending over time. **A4.**
+
+```{r}
+```
+
+**Q5.** Using case_when(), create a column in the Maryland expenses data called `spending_location` indicating whether each record spent money in Maryland or outside Maryland. For records that are in Maryland, make the new column's value "In-state" and for all others, make it "Out of state". Then write code that shows the total amount of money spent in each category and describe the results. You can do this in one statement or break it up into two statements (saving the new column to your dataframe). **A5**
+
+```{r}
+```
+
+**Q6.** Choose your own adventure: using either the UMD courses or campaign expenses data, ask and answer a question that is different than the previous ones. You can use one of the ones you provided in the pre_lab. **A6.**
+
+```{r}
+```
