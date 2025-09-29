@@ -95,9 +95,26 @@ maryland_expenses_dates |>
   arrange(desc(total_spent))
 ```
 
-**Q5.** Using case_when(), create a column in the Maryland expenses data called `spending_location` indicating whether each record spent money in Maryland or outside Maryland. For records that are in Maryland, make the new column's value "In-state" and for all others, make it "Out of state". Then write code that shows the total amount of money spent in each category and describe the results. You can do this in one statement or break it up into two statements (saving the new column to your dataframe). **A5**
+**Q5.** Using case_when(), create a column in the Maryland expenses data called `spending_location` indicating whether each record spent money in Maryland or outside Maryland. For records that are in Maryland, make the new column's value "In-state" and for all others, make it "Out of state". Then write code that shows the total amount of money spent in each category and describe the results. You can do this in one statement or break it up into two statements (saving the new column to your dataframe).
+
+**A5.** Most spending is **In-state:** \$77,735,787 VS **Out of state:** \$51,552,960
 
 ```{r}
+maryland_expenses <- maryland_expenses |>
+  mutate(
+    spending_location = case_when(
+      str_detect(address, "Maryland") ~ "In-state",
+      str_detect(address, "MD") ~ "In-state",
+      .default = "Out of state"
+    )
+  )
+  
+```
+
+```{r}
+spending_by_location <- maryland_expenses |>
+  group_by(spending_location) |>
+  summarise(total_spent = sum((amount), na.rm = TRUE))
 ```
 
 **Q6.** Choose your own adventure: using either the UMD courses or campaign expenses data, ask and answer a question that is different than the previous ones. You can use one of the ones you provided in the pre_lab. **A6.**
