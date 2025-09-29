@@ -126,19 +126,19 @@ I already have the answer of the first part in Q5 of that. Now I need to find ou
 As it appears Wes Moore’s campaign spent the most in Maryland (about **\$7.9M**), while David Blair’s spent the most out of state (about **\$4.3M**). Other top out-of-state spenders include Brooke Lierman, Tim Adams, and Kelly Schulz, while Peter Franchot and Tom Perez put more of their money into Maryland vendors.
 
 ```{r}
-spending_location |>
+maryland_expenses |>
   filter(spending_location == "Out of state") |>
   group_by(committee_name) |>
-  summarise(total_out_of_state = sum(amount, na.rm = TRUE)) |>
+  summarise(total_out_of_state = sum(amount)) |>
   arrange(desc(total_out_of_state))
 
 ```
 
 ```{r}
-spending_location |>
+maryland_expenses |>
   filter(spending_location == "In-state") |>
   group_by(committee_name) |>
-  summarise(total_in_state = sum(amount, na.rm = TRUE)) |>
+  summarise(total_in_state = sum(amount)) |>
   arrange(desc(total_in_state))
 
 ```
