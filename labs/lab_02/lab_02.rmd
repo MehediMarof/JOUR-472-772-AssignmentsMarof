@@ -117,6 +117,8 @@ spending_by_location <- maryland_expenses |>
   summarise(total_spent = sum((amount), na.rm = TRUE))
 ```
 
+**Had to take a bit help for this (na.rm = TRUE) function from google.**
+
 **Q6.** Choose your own adventure: using either the UMD courses or campaign expenses data, ask and answer a question that is different than the previous ones. You can use one of the ones you provided in the pre_lab. **A6.**
 
 Question from pre-lab: **What share of campaign money flows to Maryland-based businesses compared to out-of-state companies? Which committees spend the biggest share out of state?**
