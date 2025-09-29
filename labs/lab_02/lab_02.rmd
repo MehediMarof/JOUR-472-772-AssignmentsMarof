@@ -77,9 +77,22 @@ courses_Fall2024 |> filter(syllabus_count >= 1) |>
   
 ```
 
-**Q4.** Using the Maryland campaign expenses data, change the datatype of the expenditure_date column so that it is a date and not a chr, saving the result as a new dataframe. Then create a new column for the month based on expenditure_date. Then write code that shows total amount spent each month by Wes Moore's committee (you'll need to search the data to find the exact name, and we're not looking in payee_name). Write a sentence describing the pattern of spending over time. **A4.**
+**Q4.** Using the Maryland campaign expenses data, change the datatype of the expenditure_date column so that it is a date and not a chr, saving the result as a new dataframe. Then create a new column for the month based on expenditure_date. Then write code that shows total amount spent each month by Wes Moore's committee (you'll need to search the data to find the exact name, and we're not looking in payee_name). Write a sentence describing the pattern of spending over time. **A4. Wes Moore’s campaign spending was steady early in 2022, spiked to over \$3 million in October, and then dropped off after the election in November.**
 
 ```{r}
+maryland_expenses_dates <- maryland_expenses |> mutate(expenditure_date = mdy(expenditure_date))
+
+head(maryland_expenses_dates)
+```
+
+```{r}
+maryland_expenses_dates <- maryland_expenses_dates |>
+  mutate(month = floor_date(expenditure_date, "month"))
+maryland_expenses_dates |>
+  filter(committee_name == "Moore  Wes For Maryland") |>
+  group_by(month) |>
+  summarise(total_spent = sum(amount)) |>
+  arrange(desc(total_spent))
 ```
 
 **Q5.** Using case_when(), create a column in the Maryland expenses data called `spending_location` indicating whether each record spent money in Maryland or outside Maryland. For records that are in Maryland, make the new column's value "In-state" and for all others, make it "Out of state". Then write code that shows the total amount of money spent in each category and describe the results. You can do this in one statement or break it up into two statements (saving the new column to your dataframe). **A5**
