@@ -119,5 +119,26 @@ spending_by_location <- maryland_expenses |>
 
 **Q6.** Choose your own adventure: using either the UMD courses or campaign expenses data, ask and answer a question that is different than the previous ones. You can use one of the ones you provided in the pre_lab. **A6.**
 
+Question from pre-lab: **What share of campaign money flows to Maryland-based businesses compared to out-of-state companies? Which committees spend the biggest share out of state?**
+
+I already have the answer of the first part in Q5 of that. Now I need to find out which committees spend the more money out of state.
+
+As it appears Wes Moore’s campaign spent the most in Maryland (about **\$7.9M**), while David Blair’s spent the most out of state (about **\$4.3M**). Other top out-of-state spenders include Brooke Lierman, Tim Adams, and Kelly Schulz, while Peter Franchot and Tom Perez put more of their money into Maryland vendors.
+
 ```{r}
+spending_location |>
+  filter(spending_location == "Out of state") |>
+  group_by(committee_name) |>
+  summarise(total_out_of_state = sum(amount, na.rm = TRUE)) |>
+  arrange(desc(total_out_of_state))
+
+```
+
+```{r}
+spending_location |>
+  filter(spending_location == "In-state") |>
+  group_by(committee_name) |>
+  summarise(total_in_state = sum(amount, na.rm = TRUE)) |>
+  arrange(desc(total_in_state))
+
 ```
