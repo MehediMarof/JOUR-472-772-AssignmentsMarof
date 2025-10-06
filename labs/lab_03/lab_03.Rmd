@@ -100,24 +100,22 @@ umd_vendor_totals <- umd_capital |>
 
 Q4: You want to understand how much state grant money went to stem cell research projects each fiscal year. Search the data to find grants that fit that description. Once you find which column(s) contain the information you want, your code should find just the grants for stem cell research in a single filter. Then calculate the total amount of money for each fiscal year. Write a sentence summarizing how stem cell research funding has changed over time.
 
-A4:
+A4: From the results, Maryland’s stem cell research funding started around 2009, stayed steady through the 2010s, dipped slightly in mid-decade, and rose again sharply by 2023, reaching more than \$12 million.
 
 ```{r}
-grant_clean <- grant_loan |>
-  mutate(across(c(Grantor, Grantee, Description, Category)))
-grant_clean <- grant_loan |>
-  janitor::clean_names() |>
-  rename(fiscal_period = fiscal_period)
+grant_loan <- grant_loan |> clean_names()
+
+stemcell_grants <- grant_loan |>
+  filter(category == "Grant",
+         grepl("stem cell", description, ignore.case = TRUE))
+
+stemcell_funding_by_year <- stemcell_grants |>
+  group_by(fiscal_year) |>
+  summarise(total_amount = sum(amount, na.rm = TRUE)) |>
+  arrange(fiscal_year)
 ```
 
 ```{r}
-grant_clean |>
-  filter(
-    str_detect(Description, "STEM CELL")
-  ) |>
-    group_by(fiscal_year) |>
-  summarise(total_amount = sum(Amount)) |>
-  arrange(fiscal_year)
 
 ```
 
