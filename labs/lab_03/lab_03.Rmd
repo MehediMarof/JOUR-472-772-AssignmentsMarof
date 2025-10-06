@@ -32,9 +32,8 @@ grant_loan <- read_csv("data/State_of_Maryland_Grant_and_Loan_Data__FY2009_to_FY
 ```
 ```{r}
 cleaned_payments <- payments |>
-  clean_names() |> 
-  rename('vendor_name' = vendor_name)
-cleaned_payments
+  clean_names() |>
+  mutate(vendor_name = str_to_upper(vendor_name))
 ```
 
 ## Answer questions
@@ -45,15 +44,21 @@ HINT: you should use filter() just once, and inside your filter you want to look
 
 When you have found as many as possible, save the result to a new dataframe called `pg_schools`. How many records did you find?
 
-A1:
+A1: 55. 
 
 ```{r} 
 pg_schools <- cleaned_payments |>
   filter(
-    vendor_name == "PRINCE GEORGES COUNTY PUBLIC SCHOOLS" |
-    vendor_name == "PG COUNTY PUBLIC SCHOOL" |
-    vendor_name == "
+    str_detect(vendor_name, "PRINCE GEORGES COUNTY PUBLIC SCHOOL") |
+    str_detect(vendor_name, "PRINCE GEORGES CO PUBLIC") |
+    str_detect(vendor_name, "PG COUNTY PUBLIC") |
+    str_detect(vendor_name, "P G COUNTY PUBLIC") |
+    str_detect(vendor_name, "PGCPS") |
+    (str_detect(vendor_name, "BOARD OF EDUCATION") & 
+     str_detect(vendor_name, "PRINCE GEORGE"))
   )
+
+pg_schools |> nrow()
 ```
 
 
