@@ -64,7 +64,7 @@ pg_schools |> nrow()
 
 Q2: Using that `pg_schools` dataframe, write code to calculate the total amount of payments to the Prince George's County School system for each fiscal year. Which fiscal year had the largest total amount? Are there any aspects of the results that stand out to you?
 
-A2: 2024 had the highest.
+A2: 2024 had the highest amount paid to PG county school systems. However, some years are missing.
 
 ```{r}
 pg_schools |>
