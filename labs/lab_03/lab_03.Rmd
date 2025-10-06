@@ -99,18 +99,20 @@ A4:
 ```{r}
 grant_clean <- grant_loan |>
   mutate(across(c(Grantor, Grantee, Description, Category)))
+grant_clean <- grant_loan |>
+  janitor::clean_names() |>
+  rename(fiscal_period = fiscal_period)
 ```
 
 ```{r}
 grant_clean |>
   filter(
     str_detect(Category, "GRANT"),
-    str_detect(paste(Grantor, Grantee, Description),
-              ("STEM CELL|MSCRF"))
+    str_detect(paste(Grantor, Grantee, Description), "STEM CELL")
   ) |>
-  group_by(`Fiscal Year`) |>
-  summarise(total_amount = sum(Amount) |>
-  arrange(`Fiscal Year`)
+    group_by(fiscal_year) |>
+  summarise(total_amount = sum(Amount)) |>
+  arrange(fiscal_year)
 
 ```
 
