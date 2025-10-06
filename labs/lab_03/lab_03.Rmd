@@ -121,13 +121,14 @@ stemcell_funding_by_year <- stemcell_grants |>
 
 Q5: Using the Maryland grants and loan data, find records where the zip code is the one where the University of Maryland-College Park is located in and produce a list of grantees from that zip code, along with the total amount they received. Write a paragraph explaining how many grantees are there, what you would need to do to clean the results so that you had one record per grantee and which grantees are most interesting to you?
 
-A5:
+A5: There are 14 grantees in the 20742 ZIP code for the University of Maryland–College Park area. Most of the money went to university offices such as the University of Maryland, the Office of Research Administration, and the Clarice Smith Performing Arts Center.
+
+A few others, like Remedium Technologies, Zymetis Inc, and LeukoSight Inc, are likely private companies in the same ZIP code. To clean the data, I would combine similar grantee names so that all University of Maryland entries appear as one. The university-related grants are the most interesting because they show how state funds support research and campus projects.
 
 ```{r}
-
 umd_grants <- grant_loan |>
   filter(category == "Grant",
-         grepl("20742", zip_code)) |>
+         str_detect(zip_code, "20742")) |>
   group_by(grantee) |>
   summarise(total_amount = sum(amount, na.rm = TRUE)) |>
   arrange(desc(total_amount))
