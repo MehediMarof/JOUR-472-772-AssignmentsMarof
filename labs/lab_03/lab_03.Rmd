@@ -32,7 +32,7 @@ grant_loan <- read_csv("data/State_of_Maryland_Grant_and_Loan_Data__FY2009_to_FY
 ```
 
 ```{r}
-cleaned_payments <- payments |>
+md_payments <- payments |>
   clean_names() |>
   mutate(vendor_name = str_to_upper(vendor_name))
 ```
@@ -48,15 +48,13 @@ When you have found as many as possible, save the result to a new dataframe call
 A1: 55.
 
 ```{r}
-pg_schools <- cleaned_payments |>
+pg_schools <- md_payments |>
   filter(
     str_detect(vendor_name, "PRINCE GEORGES COUNTY PUBLIC SCHOOL") |
-    str_detect(vendor_name, "PRINCE GEORGES CO PUBLIC") |
+    str_detect(vendor_name, "PRINCE GEORGE CO PUBLIC") |
     str_detect(vendor_name, "PG COUNTY PUBLIC") |
-    str_detect(vendor_name, "P G COUNTY PUBLIC") |
-    str_detect(vendor_name, "PGCPS") |
-    (str_detect(vendor_name, "BOARD OF EDUCATION") & 
-     str_detect(vendor_name, "PRINCE GEORGE"))
+    str_detect(vendor_name, "PG COUNTY PUBLIC SCHOOLS") |
+    str_detect(vendor_name, "PGCPS")
   )
 
 pg_schools |> nrow()
@@ -64,12 +62,12 @@ pg_schools |> nrow()
 
 Q2: Using that `pg_schools` dataframe, write code to calculate the total amount of payments to the Prince George's County School system for each fiscal year. Which fiscal year had the largest total amount? Are there any aspects of the results that stand out to you?
 
-A2: 2024 had the highest amount paid to PG county school systems. However, some years are missing.
+A2: 2021 had the highest amount paid to PG county school systems, as per my finding. However, some years are missing.
 
 ```{r}
 pg_schools |>
   group_by(fiscal_year) |>
-  summarise(total_payments = sum(amount, na.rm = TRUE)) |>
+  summarise(total_payments = sum(amount)) |>
   arrange(desc(total_payments))
 ```
 
@@ -80,9 +78,9 @@ Look carefully at that list - what cleaning will it require to ensure that you h
 A3.
 
 ```{r}
-capital_projects_finder <- cleaned_payments |> filter(str_detect(agency-name, "Capital Project")) |> group_by(agency_name) |> summarize( count = n())
+capital_projects_finder <- md_payments |> filter(str_detect(agency-name, "Capital Project")) |> group_by(agency_name) |> summarize( count = n())
 
-umd_vendor_totals <- cleaned_payments |>
+umd_vendor_totals <- md_payments |>
   filter(
     str_detect(agency_name,
       "UNIVERSITY OF MARYLAND|UNIVERSITY SYSTEM OF MARYLAND|AID TO UNIVERSITY OF MD MEDICAL SYSTEM|AID TO UNIVERSITY OF MD|UMD|UNIV OF MD"
