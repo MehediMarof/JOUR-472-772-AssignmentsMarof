@@ -80,6 +80,8 @@ Look carefully at that list - what cleaning will it require to ensure that you h
 A3.
 
 ```{r}
+capital_projects_finder <- cleaned_payments |> filter(str_detect(agency-name, "Capital Project")) |> group_by(agency_name) |> summarize( count = n())
+
 umd_vendor_totals <- cleaned_payments |>
   filter(
     str_detect(agency_name,
