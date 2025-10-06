@@ -75,20 +75,26 @@ Q3. You're interested in examining the vendors paid for capital projects at the 
 
 Look carefully at that list - what cleaning will it require to ensure that you have only one row per vendor and zip code? Provide at least three examples of vendor names that are similar and should be combined into one. Describe in words how you might clean that data so that any nearly identical vendors would look identical - what would you change and how?
 
-A3.
+A3. This following code finds all payments made for **capital projects** related to **the University of Maryland** and lists each vendor with the total amount received.
+
+When reviewing the vendor list, some vendors appear more than once because their names are written slightly differently.
+
+For example: WHITING TURNER CONTRACTING CO vs WHITING TURNER CONTRACTING COMPANY
+
+GILBANE BUILDING COMPANY appears twice with different ZIP codes (02860 vs 2860 — likely formatting issue)
+
+HOLDER CONSTRUCTION GROUP LLC vs HOLDER CONSTRUCTION GROUP, LLC
+
+To fix that, I would make all names uppercase, remove punctuation and suffixes like *INC* or *LLC*, and make ZIP codes consistent so each vendor appears only once.
 
 ```{r}
-capital_projects_finder <- md_payments |> filter(str_detect(agency-name, "Capital Project")) |> group_by(agency_name) |> summarize( count = n())
+umd_capital <- md_payments |>
+  filter(str_detect(agency_name, "CAPITAL"),
+         str_detect(agency_name, "MARYLAND"))
 
-umd_vendor_totals <- md_payments |>
-  filter(
-    str_detect(agency_name,
-      "UNIVERSITY OF MARYLAND|UNIVERSITY SYSTEM OF MARYLAND|AID TO UNIVERSITY OF MD MEDICAL SYSTEM|AID TO UNIVERSITY OF MD|UMD|UNIV OF MD"
-    ),
-    str_detect(agency_name, "CAPITAL")
-  ) |>
-  group_by(agency_name, vendor_name) |>
-  summarise(total_amount = sum(amount, na.rm = TRUE), .groups = "drop") |>
+umd_vendor_totals <- umd_capital |>
+  group_by(vendor_name, vendor_zip) |>
+  summarise(total_amount = sum(amount, na.rm = TRUE)) |>
   arrange(desc(total_amount))
 ```
 
