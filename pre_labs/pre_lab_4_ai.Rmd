@@ -22,7 +22,7 @@ Then we can load that library and, using your API key, setup your credentials:
 
 ```{r}
 library(axolotr)
-create_credentials(GROQ_API_KEY = "")
+create_credentials(GROQ_API_KEY = )
 ```
 
 See that "Please restart your R session for changes to take effect."? Go ahead and do that; you'll need to rerun the `library()` function for axolotr, and let's load tidyverse while we're at it.
@@ -126,10 +126,26 @@ Note that the column names may not match your data; the LLM is making prediction
 
 Well, you can try, but I'm not confident you'll like the results. As [this story from The Pudding](https://pudding.cool/2024/07/ai/) makes clear, the potential for using LLMs to not just assist with but perform data analysis is real. What will make the difference is how much context you can provide and how clear your ideas and questions are. You still have to do the work.
 
-## TO DO: Create code to ask Groq anything related to this class. Look at its response and comment on whether it is appropriate and correct, and your thoughts about it.
+## TO DO: Create code to ask Groq anything related to this class. Look at its response and comment on whether it is appropriate and correct, and your thoughts about it. 
+
+**Your comment:** I think my prompt was a bit too broad, so Groq’s response wandered a little. It did include the right libraries and general structure, but the code wouldn’t actually run because it tried to rename columns with spaces instead of cleaning them first. It was conceptually fine, just not very precise.
 
 ```{r}
+groq_july2024bd <- axolotr::ask(
+  prompt = paste("You're an expert in R, tidyverse, and janitor libraries. Use latest pipe style. I have a CSV dataset of daily reported deaths during Bangladesh's 2024 july student protests. 
 
+Here are the columns: Serial, Medical Case ID, Victim, Bengali name, Victim's father, Contact number, Present Address, Permanent Address, Hospital, Place of incident, Age, Responsible Police Station, District, Division, Political Affiliation, Alleged Perpetrator, Cause, Date, Source 1, Source 2, Role in protest, Reason, Details, Notes, Addl. Note, More notes.
+
+Suggest detailed R and tidyverse code to:
+1. Clean and standardize the data (e.g., column names, missing values, duplicates).
+2. Summarize deaths by district, division, and date.
+3. Identify possible spikes or clusters over dates.
+4. Explore relationships between cause of death, affiliation, and location.
+
+Focus on clarity and reproducibility, and comment each code block briefly, no yapping."
+  ),
+  model = "llama-3.1-8b-instant"
+)
+
+groq_july2024bd
 ```
-
-**Your comment:**
