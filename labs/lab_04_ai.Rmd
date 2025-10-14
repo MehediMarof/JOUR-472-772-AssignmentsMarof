@@ -152,20 +152,53 @@ lab_question = 'Using case_when(), create a column in the Maryland expenses data
 
 #Paste the code block here, between the quotes. If your code has quotes or single quotes, you have to add a \ before each one so R doesn't break.
 
-your_r_code_lab = "
-
-
+your_r_code_lab <- "
+maryland_expenses <- maryland_expenses |>
+  mutate(
+    spending_location = case_when(
+      str_detect(address, \"Maryland\") ~ \"In-state\",
+      str_detect(address, \"MD\") ~ \"In-state\",
+      .default = \"Out of state\"
+    )
+  )
+  spending_by_location <- maryland_expenses |>
+  group_by(spending_location) |>
+  summarise(total_spent = sum((amount), na.rm = TRUE))
 "
-
-
 ```
 
 ```{r}
 #Add code below to talk to Groq and display its response
+q3_prompt <- paste(
+  "You are a strict R/tidyverse reviewer for a data journalism class.",
+  "First, restate the requirement in one sentence.",
+  "Then give a verdict: Meets / Does not meet, with a one-line reason.",
+  "List up to 4 short bullets on issues/fixes (edge cases like NA addresses, case-insensitive matching, word boundaries).",
+  "Finally, provide ONE corrected, runnable R code block using the |> pipe that:",
+  "- creates spending_location via case_when() using only the address column,",
+  "- treats 'MD'/'Maryland' case-insensitively with word boundaries,",
+  "- handles NA addresses explicitly,",
+  "- summarizes total amount by spending_location with na.rm = TRUE, and",
+  "- returns a 2-column tibble (spending_location, total_amount).",
+  "Keep the response concise.\n\n",
+  "LAB REQUIREMENT:\n", lab_question, "\n\n",
+  "STUDENT CODE:\n", your_r_code_lab
+)
+
+q3_response <- axolotr::ask(
+  prompt = q3_prompt,
+  model = "llama-3.1-8b-instant"
+)
+
+q3_response 
+
+"
+
+
 
 ```
 
-**Answer:**
+**Answer:** Groq’s response was clear and accurate. It correctly restated the goal of the assignment and gave a fair verdict. It pointed out that my code worked but didn’t handle NA addresses and didn’t check “MD” or “Maryland” in a case-insensitive way. The suggested fixes made sense: add `!is.na(address)`, use `tolower()` or regex for case insensitivity, and ensure the column name is consistent. The corrected code it provided would work as intended and better follows the assignment instructions.
 
 ------------------------------------------------------------------------
 
