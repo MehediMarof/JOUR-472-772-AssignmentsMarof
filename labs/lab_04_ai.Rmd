@@ -246,7 +246,26 @@ The most interesting ones are:
 
 ```{r}
 #Add code below to talk to Groq and display its response
+q5_prompt <- paste(
+  "You are a local news reporter for a Maryland community paper.",
+  "Write a 500-word breaking news article about a car crash that occurred at the intersection of Knox Road and Regents Drive, near the University of Maryland campus in College Park.",
+  "",
+  "Include realistic but general details such as time of day, type of vehicles involved, witness or police statements, and impact on traffic.",
+  "Make the story sound factual and journalistic, following AP style conventions.",
+  "Do not include any made-up names for victims or drivers; use neutral identifiers like 'a driver' or 'a witness.'",
+  "Include a short quote from a police spokesperson or witness to make the story sound authentic.",
+  "",
+  "End the article with context about the intersection and past safety concerns or similar incidents.",
+  "",
+  "Write the full article as plain text (no markdown, no formatting)."
+)
 
+q5_response <- axolotr::ask(
+  prompt = q5_prompt,
+  model = "llama-3.1-8b-instant"
+)
+
+q5_response
 ```
 
-**Answer:**
+**Answer:** Not bad. Groq’s article was well-written and sounded like a real local news story.
