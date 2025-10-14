@@ -206,10 +206,39 @@ q3_response
 
 ```{r}
 #Add code below to talk to Groq and display its response
+q4_prompt <- paste(
+  "You are a data editor at a newsroom helping a journalism student brainstorm story ideas.",
+  "The dataset is the Montgomery County, MD 'Crash Reporting – Incidents Data' available at",
+  "https://data.montgomerycountymd.gov/Public-Safety/Crash-Reporting-Incidents-Data/bhju-22kf/about_data.",
+  "It includes fields such as date/time of crash, latitude/longitude, street names, injury severity,",
+  "pedestrian/bicycle involvement, weather, lighting, road conditions, and contributing factors.",
+  "",
+  "Based on this dataset, generate 8–10 concrete and realistic story ideas that could be developed using data analysis and visualization.",
+  "For each idea, include:",
+  "1. The question or angle for the story.",
+  "2. The relevant fields to use from the dataset.",
+  "3. The type of analysis or comparison to run (e.g., grouping, mapping, regression, before/after).",
+  "4. The chart, map, or visualization that would help tell the story.",
+  "5. One caveat or limitation to consider (e.g., underreporting, geocoding errors, exposure).",
+  "",
+  "Write the ideas as concise bullet points suitable for a newsroom pitch list. Keep the tone factual and journalistic."
+)
 
+q4_response <- axolotr::ask(
+  prompt = q4_prompt,
+  model = "llama-3.1-8b-instant"
+)
+
+q4_response
 ```
 
-**Answer:**
+**Answer:** Groq suggested ten story ideas: pedestrian safety hotspots, weather-related crashes, bike lane effectiveness, school zone safety, time-of-day crash patterns, weekend vs. weekday trends, alcohol-related crashes, lighting conditions and crash severity, high-risk intersections, and seasonal crash patterns.
+
+The most interesting ones are:
+
+**Weekend vs. Weekday and Alcohol-Related Crashes** – This story could see = how crash patterns differ between weekdays and weekends, especially when alcohol is involved. It could show if weekends see more severe or late-night crashes linked to drinking. Mapping weekend alcohol-related crashes and comparing them with weekday ones could reveal nightlife or high-risk areas. A simple bar chart or heat map would make this pattern clear and connect driving behavior to safety concerns.
+
+**Lighting, Weather, and Seasonal Crash Patterns** – This story could look at how environmental factors like lighting, weather, and season affect crash severity. It could show whether dark, rainy, or winter conditions lead to more serious crashes. Comparing crash counts under different lighting and weather conditions across months could highlight clear risk patterns. Visuals like heat maps or seasonal trend lines would make the findings easy to understand and valuable for reporting on road safety and infrastructure improvements.
 
 ------------------------------------------------------------------------
 
