@@ -94,7 +94,6 @@ q1_prompt <- paste(
   "TEXT:\n", text
 )
 
-# 1️⃣ Ask Groq for the dataset
 q1_csv <- axolotr::ask(
   prompt = q1_prompt,
   model = "llama-3.1-8b-instant"
@@ -124,10 +123,23 @@ r_code_example = 'umd_courses |>
 
 ```{r}
 #Add code below to talk to Groq and display its response
+q2_prompt <- paste(
+  "You are an R and tidyverse teaching assistant for a data journalism course at the University of Maryland.",
+  "Explain clearly what this code does, step by step, assuming the dataset is named umd_courses.",
+  "Describe the purpose of each function and what the final output looks like.",
+  "Keep the explanation factual, short, and in plain English so a student can understand it.",
+  "CODE:\n", r_code_example
+)
 
+q2_response <- axolotr::ask(
+  prompt = q2_prompt,
+  model = "llama-3.1-8b-instant"
+)
+
+q2_response
 ```
 
-**Answer:**
+**Answer:** Groq explained the code correctly. It said the code filters courses that have “Climate” in the title and seats greater than zero, then groups them by department, counts how many classes each department has, and sorts the result from most to least. The explanation was clear and easy to follow. The only small thing missing is that `str_detect()` comes from the stringr package. Overall, the answer was accurate.
 
 ------------------------------------------------------------------------
 
