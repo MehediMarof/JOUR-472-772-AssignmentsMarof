@@ -49,7 +49,7 @@ Most questions have a code block and a space for an answer below. Write the code
 **A2:**
 
 ```{}
-```
+```8665
 
 ------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ nrow(high_mag)
 
 ```
 
-**A4: 12
+**A4: 13
 
 ------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@ high_mag_depth <- earthquakes |>
 nrow(high_mag_depth)
 ```
 
-**A5:** 8
+**A5:** 7
 
 ------------------------------------------------------------------------
 
@@ -102,17 +102,20 @@ nrow(high_mag_or_depth)
 
 ```
 
-**A6:** 7606
+**A6:** 7141
 
 ------------------------------------------------------------------------
 
 #### **Q7** I'm interested in finding earthquakes that took place in Alaska. Which column should I look at? How do I use it to find all the earthquakes in Alaska? How many earthquakes took place there?
 
 ```{r}
+alaska_quakes <- earthquakes |>
+  filter(str_detect(place, "Alaska"))
 
+nrow(alaska_quakes)
 ```
 
-**A7:**
+**A7:** 2153
 
 ------------------------------------------------------------------------
 
@@ -120,62 +123,111 @@ nrow(high_mag_or_depth)
 
 ```{r}
 
+earthquakes |>
+  count(type, sort = TRUE)
+
+earthquakes |>
+  count(type, sort = TRUE) |>
+  head(2)
+
 ```
 
-**A8:**
+**A8:** I used count(type, sort = TRUE) to list all tremor types and their frequencies.
+The two most common types are: earthquake: 8,472 and quarry blast: 120
 
 ------------------------------------------------------------------------
 
 #### **Q9** How do I calculate the average depth of each type of tremor? What is the average depth of the earthquake type in this data set? Is there anything that seems unusual or surprising in this finding?
 
 ```{r}
-
+earthquakes |>
+  group_by(type) |>
+  summarise(avg_depth = mean(depth, na.rm = TRUE))
 ```
 
-**A9:**
+**A9:** I used group_by(type) and summarise(avg_depth = mean(depth, na.rm = TRUE)) to calculate the average depth of each tremor type. The average depth for earthquakes is about 19.6 km, while explosions and quarry blasts occur at or slightly above the surface (negative values mean they happened above ground level).
 
 ------------------------------------------------------------------------
 
 #### **Q10** I'm interested, in the future, to see the hours in which earthquakes happen. How can I extract the hour from the time column?
 
 ```{r}
+earthquakes |>
+  mutate(hour = hour(time)) |>
+  select(time, hour)
 
 ```
 
-**A10:**
+**A10:** I used mutate(hour = hour(time)) from the lubridate package to extract the hour from the time column. This created a new column showing the hour (in 24-hour format) when each earthquake occurred.
 
 ------------------------------------------------------------------------
 
 #### **Q11** I want to make a note of all the records in this data set that I consider serious. For my purposes, I'm thinking that all tremors that have a magnitude that is larger than 3 are serious. How do I automatically create a new column making that distinction?
 
 ```{r}
-
+earthquakes |>
+  mutate(serious = case_when(
+    mag > 3 ~ "Yes",
+    TRUE ~ "No"
+  )) |>
+  select(time, mag, serious)
 ```
 
 **A11:**
-
+I used mutate() with case_when() to create a new column called serious.
+It labels tremors with a magnitude greater than 3 as “Yes” and all others as “No.”
 ------------------------------------------------------------------------
 
 #### **Q12** I have no idea how earthquakes work and I'm interested in seeing if there is a particular time of day in which serious earthquakes happen. How can I see that condensed in a table with all the hours in a day and all the serious earthquakes in each hour? What is the hour with fewer serious earthquakes and the one with the most serious earthquakes?
 
 ```{r}
-
+earthquakes |>
+  mutate(hour = hour(time)) |>
+  filter(mag > 3) |>
+  count(hour, sort = TRUE)
 ```
 
-**A12**:
+**A12**: The hour with the most serious earthquakes is 16 (4 p.m.),
+and the hour with the fewest is 9 (9 a.m.).
+
+I used mutate(hour = hour(time)) to extract the hour, then filtered for serious earthquakes (mag > 3) and counted how many happened each hour using count(hour, sort = TRUE). The table shows how many serious earthquakes occurred in each hour of the day — the top hour has the most, and the bottom hour has the fewest.
 
 ------------------------------------------------------------------------
 
 #### EXTRA Q What other questions are you interested in and how would you ask them in R?
 
+EQ1. Where do most earthquake happen? -- The locations near Christine, Texas and Prague, Oklahoma experienced the most earthquakes in this dataset.
+
 ```{r}
+earthquakes |>
+  count(place, sort = TRUE) |>
+  head(10)
 
 ```
 
+EQ2. What is the average magnitude of earthquakes in each U.S. state or region?
+
 ```{r}
+earthquakes |>
+  separate(place, into = c("dist", "region"), sep = ", ", fill = "right") |>
+  group_by(region) |>
+  summarise(avg_mag = mean(mag, na.rm = TRUE)) |>
+  arrange(desc(avg_mag))
 
 ```
+EQ3. Are shallow earthquakes more likely to be strong?
+
+I divided earthquakes into two groups — shallow (less than 20 km deep) and deep (20 km or deeper) — and calculated the average magnitude for each.
+
+Deep (≥20 km)	-- magnitude 2.83
+Shallow (<20 km) -- magnitude 1.28
+
+On average, deeper earthquakes are stronger, with magnitudes more than twice as large as shallow ones.
 
 ```{r}
+earthquakes |>
+  mutate(depth_group = if_else(depth < 20, "Shallow (<20 km)", "Deep (≥20 km)")) |>
+  group_by(depth_group) |>
+  summarise(avg_mag = mean(mag, na.rm = TRUE))
 
 ```
