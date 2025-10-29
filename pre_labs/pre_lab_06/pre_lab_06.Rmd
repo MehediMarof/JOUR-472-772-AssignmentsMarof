@@ -148,7 +148,7 @@ We can get this by using mutate and arrange:
 
 ### Task 10: Asking Demographic Questions
 
-**Task** Using mutate, let's find the county with the highest 18+ Black population as a percentage of all population 18 and over and also the percentage of Democrats in that county. Put your answers below. **Answer:** \
+**Task** Using mutate, let's find the county with the highest 18+ Black population as a percentage of all population 18 and over and also the percentage of Democrats in that county. Put your answers below. **Answer:**\
 Prince George’s County has the highest 18+ Black population share (\~60.9%) and about **78.3%** Democrats.
 
 ```{r}
