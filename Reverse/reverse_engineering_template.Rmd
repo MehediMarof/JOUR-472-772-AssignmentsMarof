@@ -82,13 +82,23 @@ enrollment_change
 
 ### Sentence 2
 
--   **Sentence text**: [Paste in sentence to engineer here]
+-   **Sentence text**: Across the states in the analysis, private-school enrollment grew by about 103,000 students.
 -   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
 
 ```{r}
-# Put code to reverse engineer sentence here
 
-# Display results of code below this codeblock
+ap_states <- c("CA","CO","CT","DC","FL","GA","HI","IL","IN","IA",
+               "KS","LA","MD","MA","MN","MO","NC","NE","NH","NJ","NY")
+
+enrollment_by_year <- private_enrollment_by_grade |>
+  filter(sch_year %in% c("2019-2020", "2021-2022"),
+         state %in% ap_states) |>
+  summarise(total_enrollment = sum(enrollment, na.rm = TRUE), .by = sch_year) |>
+  arrange(sch_year)
+
+enrollment_change <- enrollment_by_year |>
+  summarise(change = total_enrollment[sch_year == "2021-2022"] -
+                    total_enrollment[sch_year == "2019-2020"])
 
 ```
 
