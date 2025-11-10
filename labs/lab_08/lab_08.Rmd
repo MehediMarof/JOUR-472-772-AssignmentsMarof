@@ -60,7 +60,7 @@ pg_calls_per_month |>
   ggplot() +
   geom_bar(aes(x=reorder(month,total_calls), weight=total_calls)) +
   labs(
-    title= "will change later",
+    title= "Highest Number of Overdose 911 Calls in 2022",
     x = "month",
     y = "total calls",
     caption = "source: PG County"
@@ -79,6 +79,20 @@ Describe the pattern of results; you may want to look at the data to dig into pa
 **A2.**
 
 ```{r}
+pg_calls_week <- pg_calls |>
+group_by(week) |>
+summarise(total_calls = n())
+
+pg_calls_week |>
+ggplot(aes(x = week, y = total_calls)) +
+geom_line(color = "darkred", linewidth = 1) +
+geom_point(size = 1.8) +
+labs(
+title = "Weekly Trends in 911 Overdose Calls in Prince George's County (2022)",
+x = "Week of Year (2022)",
+y = "Total 911 Overdose Calls",
+caption = "Source: Prince George's County EMS"
+)
 ```
 
 **Q3.** A scatterplot is a type of chart that helps us see relationships between two variables. One variable goes on the x axis, the other on the y axis. For each row/observation in our data, a scatterplot puts a circle (or a "point") where the two variables intersect on a grid.
@@ -106,9 +120,38 @@ To answer this question, do the following:
 **A3.**
 
 ```{r}
-get_acs(geography = 'zcta',
-        variable='B19013_001',
-        state = "MD",
-        year = 2019
-        )
+# 1. Summarize calls by ZIP
+calls_by_zip <- pg_calls |>
+  group_by(zipcode) |>
+  summarise(total_calls = n()) |>
+  rename(zip_code = zipcode)
+
+# 2. Get ACS data
+income_data <- get_acs(
+  geography = "zcta",
+  variables = "B19013_001",
+  state = "MD",
+  year = 2019
+) |>
+  select(GEOID, estimate) |>
+  rename(zip_code = GEOID, median_income = estimate)
+
+# 3. Join data
+merged_data <- left_join(calls_by_zip, income_data, by = "zip_code")
+
+# 4. Scatterplot
+merged_data |>
+  ggplot(aes(x = median_income, y = total_calls, label = zip_code)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  geom_text(check_overlap = TRUE, vjust = -0.5, size = 3) +
+  labs(
+    title = "Fewer 911 Overdose Calls in Wealthier ZIP Codes",
+    x = "Median Household Income (USD)",
+    y = "Total 911 Overdose Calls",
+    caption = "Source: Prince George's County EMS and U.S. Census Bureau"
+  )
+
+
+
 ```

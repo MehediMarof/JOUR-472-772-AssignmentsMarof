@@ -118,7 +118,57 @@ population_by_age|>
 ```{r}
 # Put code to reverse engineer sentence here
 
+# Step 1: Calculate change in public-school enrollment
+public_19 <- public_enrollment |>
+  filter(grade == "k_12_total") |>
+  filter(state %in% c("CALIFORNIA","NEW YORK","LOUISIANA","NORTH CAROLINA","WASHINGTON",
+                      "COLORADO","GEORGIA","MINNESOTA","WISCONSIN","NEW HAMPSHIRE",
+                      "MASSACHUSETTS","MONTANA","DELAWARE","NORTH DAKOTA",
+                      "DISTRICT OF COLUMBIA","SOUTH DAKOTA","SOUTH CAROLINA",
+                      "NEBRASKA","RHODE ISLAND","TENNESSEE","PENNSYLVANIA","FLORIDA")) |>
+  filter(sch_year == "2019-2020") |>
+  summarise(total_enrollment = sum(enrollment))
 
+public_21 <- public_enrollment |>
+  filter(grade == "k_12_total") |>
+  filter(state %in% c("CALIFORNIA","NEW YORK","LOUISIANA","NORTH CAROLINA","WASHINGTON",
+                      "COLORADO","GEORGIA","MINNESOTA","WISCONSIN","NEW HAMPSHIRE",
+                      "MASSACHUSETTS","MONTANA","DELAWARE","NORTH DAKOTA",
+                      "DISTRICT OF COLUMBIA","SOUTH DAKOTA","SOUTH CAROLINA",
+                      "NEBRASKA","RHODE ISLAND","TENNESSEE","PENNSYLVANIA","FLORIDA")) |>
+  filter(sch_year == "2021-2022") |>
+  summarise(total_enrollment = sum(enrollment))
+
+public_change <- public_21$total_enrollment - public_19$total_enrollment
+public_change
+
+# Step 2: Calculate change in private-school enrollment
+private_19 <- private_enrollment |>
+  filter(grade == "k_12_total") |>
+  filter(state %in% c("CA","NY","LA","NC","WA","CO","GA","MN","WI","NH",
+                      "MA","MT","DE","ND","DC","SD","SC","NE","RI","TN","PA","FL")) |>
+  filter(sch_year == "2019-2020") |>
+  summarise(total_enrollment = sum(enrollment))
+
+private_21 <- private_enrollment |>
+  filter(grade == "k_12_total") |>
+  filter(state %in% c("CA","NY","LA","NC","WA","CO","GA","MN","WI","NH",
+                      "MA","MT","DE","ND","DC","SD","SC","NE","RI","TN","PA","FL")) |>
+  filter(sch_year == "2021-2022") |>
+  summarise(total_enrollment = sum(enrollment))
+
+private_change <- private_21$total_enrollment - private_19$total_enrollment
+private_change
+
+# Step 3: Include homeschool growth
+homeschool_change <- 184000
+homeschool_change
+
+# Step 4: Estimate missing students
+# Formula: public loss - (private gain + homeschool gain)
+
+missing_students <- (public_change * -1) - (private_change + homeschool_change)
+missing_students
 
 ```
 
