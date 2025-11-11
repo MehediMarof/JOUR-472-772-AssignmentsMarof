@@ -108,7 +108,11 @@ In order to make a map, we need to be able to tell Datawrapper that a certain co
 
 # calculate the total number of votes and Moore's percentage, saving it back to the md_gov_county dataframe
 
-write_csv(md_gov_county, "data/md_gov_county.csv")
+md_gov_county <- md_gov_county |>
+  mutate(total = Cox + Moore + Lashar + Wallace + Harding,
+         percentage_moore = (Moore/total)*100)
+
+write_csv(md_gov_county, "data/md_gov_county_expanded.csv")
 ```
 
 **Task** Go back to Datawrapper and click on "New Map". Click on "Choropleth map" and then choose "USA \>\> Counties (2022)" for the map base and click the Proceed button.
