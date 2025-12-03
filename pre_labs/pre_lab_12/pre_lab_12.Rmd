@@ -39,7 +39,9 @@ Let's read in this data and examine it:
 
 ### Task 2: Read in data
 
-**Task** Run the following code and describe the dataframe it outputs. **Answer:** The dataframe has 499 rows and 15 columns. Each row is one disciplinary alert with the doctor’s name, the type of action, the date, the PDF URL, and a `text` column containing the full written order. It’s basically one alert per row with some metadata plus the full text for analysis.
+**Task** Run the following code and describe the dataframe it outputs.
+
+**Answer:** The dataframe has 499 rows and 15 columns. Each row is one disciplinary alert with the doctor’s name, the type of action, the date, the PDF URL, and a `text` column containing the full written order. It’s basically one alert per row with some metadata plus the full text for analysis.
 
 ```{r}
 alerts <- read_rds("data/md_doc_alerts.rds")
@@ -71,7 +73,9 @@ Fortunately, this is a solved problem with tidytext, which has a function called
 
 ### Task 5: Trying out unnest_tokens
 
-**Task** Run the following code and describe the output of using the `unnest_tokens` function. **Answer:** It creates about 1.38 million words (1,379,101 rows), with each row representing one cleaned, lowercase word from the alerts.
+**Task** Run the following code and describe the output of using the `unnest_tokens` function.
+
+**Answer:** It creates about 1.38 million words (1,379,101 rows), with each row representing one cleaned, lowercase word from the alerts.
 
 ```{r}
 unique_words <- alerts |> select(text) |>
@@ -129,7 +133,9 @@ From there, we can get a simple word frequency by just grouping them together an
 
 ### Task 8: Using anti_join
 
-**Task** Run the following code and describe the results. Is it more interesting than before? **Answer:** After removing stop words, the most frequent remaining words are things like “patient,” “license,” “disciplinary,” “health,” and “medical.” These are much more meaningful and clearly related to physician discipline cases, so the results are far more informative than the earlier list dominated by common words.
+**Task** Run the following code and describe the results. Is it more interesting than before?
+
+**Answer:** After removing stop words, the most frequent remaining words are things like “patient,” “license,” “disciplinary,” “health,” and “medical.” These are much more meaningful and clearly related to physician discipline cases, so the results are far more informative than the earlier list dominated by common words.
 
 ```{r}
 unique_words |>
@@ -162,7 +168,9 @@ Then we can create top 10 lists for both of them and compare:
 
 ### Task 10: Create dataframes with the top 10 words in each year
 
-**Task** Run the following code and describe the results. **Answer:** The top 10 words for each year highlight the main themes in the alerts. In 2023, common terms include “license,” “disciplinary,” “health,” “consent,” and “hearing.” In 2022, the most frequent words are similar—“disciplinary,” “health,” “patient,” “license,” and “medical.” Both lists show that the alerts consistently focus on licensing actions, disciplinary decisions, medical practice issues, and hearings.
+**Task** Run the following code and describe the results.
+
+**Answer:** The top 10 words for each year highlight the main themes in the alerts. In 2023, common terms include “license,” “disciplinary,” “health,” “consent,” and “hearing.” In 2022, the most frequent words are similar—“disciplinary,” “health,” “patient,” “license,” and “medical.” Both lists show that the alerts consistently focus on licensing actions, disciplinary decisions, medical practice issues, and hearings.
 
 ```{r}
 unique_words_2023 |>
@@ -200,7 +208,9 @@ So this block is is going to do the following:
 
 ### Task 11: Create a dataframe with the top 10 two-word phrases for 2021
 
-**Task** Run the following code and describe the results. **Answer:** The output shows the ten most common two-word phrases that appear in the alerts before 2024. Phrases like “summary suspension,” “unprofessional conduct,” and “medical records” rise to the top. These bigrams are more informative than single words because they show specific actions or issues that repeatedly appear in physician discipline cases.
+**Task** Run the following code and describe the results.
+
+**Answer:** The output shows the ten most common two-word phrases that appear in the alerts before 2024. Phrases like “summary suspension,” “unprofessional conduct,” and “medical records” rise to the top. These bigrams are more informative than single words because they show specific actions or issues that repeatedly appear in physician discipline cases.
 
 ```{r}
 alerts |>
@@ -220,7 +230,9 @@ And we already have a different, more nuanced result. We can see that "summary s
 
 ### Task 12: Create a dataframe with the top 10 two-word phrases for 2023
 
-**Task** Run the following code and describe the results. **Answer:** The top bigrams for 2023 are dominated by legal and procedural phrases such as “health occ,” “md code,” and “code ann,” along with discipline-related terms like “summary suspension,” “medical records,” “health care,” and “unprofessional conduct.” These phrases show that much of the 2023 language centers on statutory citations and the formal steps in disciplinary actions.
+**Task** Run the following code and describe the results.
+
+**Answer:** The top bigrams for 2023 are dominated by legal and procedural phrases such as “health occ,” “md code,” and “code ann,” along with discipline-related terms like “summary suspension,” “medical records,” “health care,” and “unprofessional conduct.” These phrases show that much of the 2023 language centers on statutory citations and the formal steps in disciplinary actions.
 
 ```{r}
 alerts |>
@@ -240,7 +252,9 @@ And 2024?
 
 ### Task 13: Create a dataframe with the top 10 two-word phrases for 2024
 
-**Task** Run the following code and describe the results. **Answer**: In 2024, the most common bigrams include “health occ,” “summary suspension,” “md code,” and “code ann,” along with phrases like “prehearing conference” and “respondent’s license.” These show the same legal and disciplinary themes as earlier years, with only small shifts in which specific procedural terms appear most often.
+**Task** Run the following code and describe the results.
+
+**Answer**: In 2024, the most common bigrams include “health occ,” “summary suspension,” “md code,” and “code ann,” along with phrases like “prehearing conference” and “respondent’s license.” These show the same legal and disciplinary themes as earlier years, with only small shifts in which specific procedural terms appear most often.
 
 ```{r}
 alerts |>
@@ -266,7 +280,9 @@ Another popular use of text analysis is to measure the sentiment of a word - whe
 
 ### Task 14: Load the bing lexicon and produce sentiments for our 2021-2023 unique words
 
-**Task** Run the following code and describe the results. Do any of the sentiments seem incorrect or counter-intuitive? **Answer:** The sentiment results show which words from the alerts match the “bing” lexicon and whether they’re labeled positive or negative. Many of the high-frequency words are negative (like “violation,” “failed,” “dangerous,” “fraud,” “criminal”), which makes sense because disciplinary orders often describe problems, misconduct, or violations. Some words appear positive (“patient,” “right,” “appropriate,” “effective”), but in this context they may not actually express positivity, which shows how sentiment dictionaries can sometimes misinterpret specialized or legal language.
+**Task** Run the following code and describe the results. Do any of the sentiments seem incorrect or counter-intuitive?
+
+**Answer:** The sentiment results show which words from the alerts match the “bing” lexicon and whether they’re labeled positive or negative. Many of the high-frequency words are negative (like “violation,” “failed,” “dangerous,” “fraud,” “criminal”), which makes sense because disciplinary orders often describe problems, misconduct, or violations. Some words appear positive (“patient,” “right,” “appropriate,” “effective”), but in this context they may not actually express positivity, which shows how sentiment dictionaries can sometimes misinterpret specialized or legal language.
 
 ```{r}
 bing <- get_sentiments("bing")
