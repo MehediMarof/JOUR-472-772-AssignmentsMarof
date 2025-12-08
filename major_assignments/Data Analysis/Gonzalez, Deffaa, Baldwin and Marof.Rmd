@@ -253,7 +253,7 @@ Although PFAS releases appear extremely small by weight (0.012 percent of all TR
 
 Industry sectors vary dramatically in their contribution to high-hazard releases. The chemical manufacturing sector stands out overwhelmingly, reporting more than **2.28 trillion pounds** of hazardous releases—by far the largest total of any sector. Primary metals (690 billion pounds) and metal mining (389 billion pounds) follow, reflecting the heavy-chemical and metal-processing operations central to those industries. Hazardous
 
-###  **a. Overall share of carcinogen, PBT, and PFAS releases**
+### **a. Overall share of carcinogen, PBT, and PFAS releases**
 
 ```{r}
 hazard_totals <- tri_clean |>
